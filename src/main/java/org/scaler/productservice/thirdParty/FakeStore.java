@@ -14,18 +14,18 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class FakeStore {
     private RestTemplate restTemplate;
+    private final String fakeStoreUrl = "https://fakestoreapi.com/products/";
 
     public FakeStoreProductDto getProductById(Long id) {
         FakeStoreProductDto fakeStoreProductDto =
-                restTemplate.getForObject("https://fakestoreapi.com/products/" + id,
-                        FakeStoreProductDto.class);
+                restTemplate.getForObject(fakeStoreUrl + id, FakeStoreProductDto.class);
         return fakeStoreProductDto;
     }
 
     public FakeStoreProductDto[] getAllProducts() {
 
         FakeStoreProductDto[] fakeStoreProductDtos =
-                restTemplate.getForObject("https://fakestoreapi.com/products",
+                restTemplate.getForObject(fakeStoreUrl,
                         FakeStoreProductDto[].class);
 
         return fakeStoreProductDtos;
@@ -34,9 +34,13 @@ public class FakeStore {
     public FakeStoreProductDto replaceProduct(Long id, FakeStoreProductDto fakeStoreProductDto) {
 
 
-        RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreProductDto, FakeStoreProductDto.class);
-        HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor = new HttpMessageConverterExtractor(FakeStoreProductDto.class, restTemplate.getMessageConverters());
-        FakeStoreProductDto responseFakeStoreDto =  restTemplate.execute("https://fakestoreapi.com/products/" + id, HttpMethod.PUT, requestCallback, responseExtractor);
+        RequestCallback requestCallback = restTemplate.httpEntityCallback(fakeStoreProductDto,
+                FakeStoreProductDto.class);
+        HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor = new
+                HttpMessageConverterExtractor(FakeStoreProductDto.class,
+                restTemplate.getMessageConverters());
+        FakeStoreProductDto responseFakeStoreDto =  restTemplate.execute(fakeStoreUrl + id,
+                HttpMethod.PUT, requestCallback, responseExtractor);
 
         return responseFakeStoreDto;
     }

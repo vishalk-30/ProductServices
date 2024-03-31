@@ -3,10 +3,11 @@ package org.scaler.productservice.services;
 import lombok.AllArgsConstructor;
 import org.scaler.productservice.dtos.FakeStoreProductDto;
 import org.scaler.productservice.dtos.ProductDto;
+import org.scaler.productservice.exception.ProductNotFoundException;
 import org.scaler.productservice.models.Category;
 import org.scaler.productservice.models.Product;
 import org.scaler.productservice.thirdParty.FakeStore;
-import org.springframework.http.HttpMethod;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
@@ -19,8 +20,11 @@ import java.util.List;
 public class FakeStoreProductService implements ProductService{
     private FakeStore fakeStore;
     @Override
-    public Product getProductById(Long id) {
+    public Product getProductById(Long id) throws ProductNotFoundException {
         FakeStoreProductDto fakeStoreProductDto = fakeStore.getProductById(id);
+        if(fakeStoreProductDto == null){
+            throw new ProductNotFoundException("Product not found for id : " + id);
+        }
         return convertFakeStoreDtoToProduct(fakeStoreProductDto);
     }
 
@@ -56,14 +60,6 @@ public class FakeStoreProductService implements ProductService{
                 .description(productDto.getDescription())
                 .build();
 
-//        product.setId(productDto.getId());
-//        product.setDescription(productDto.getDescription());
-//        product.setImage(productDto.getImage());
-//        product.setTitle(productDto.getTitle());
-//        product.setPrice(productDto.getPrice());
-//        Category category = new Category();
-//        category.setDesc(productDto.getCategory());
-//        product.setCategory(category);
         return product;
     }
 
@@ -76,11 +72,7 @@ public class FakeStoreProductService implements ProductService{
                 .image(product.getImage())
                 .price(product.getPrice())
                 .build();
-//        fakeStoreProductDto.setDescription(product.getDescription());
-//        fakeStoreProductDto.setCategory(product.getCategory().getDesc());
-//        fakeStoreProductDto.setTitle(product.getTitle());
-//        fakeStoreProductDto.setPrice(product.getPrice());
-//        fakeStoreProductDto.setImage(product.getImage());
+
        return fakeStoreProductDto;
     }
 
@@ -95,14 +87,6 @@ public class FakeStoreProductService implements ProductService{
                 .title(fakeStoreProductDto.getTitle())
                 .id(fakeStoreProductDto.getId())
                 .build();
-//        product.setId(fakeStoreProductDto.getId());
-//        product.setDescription(fakeStoreProductDto.getDescription());
-//        product.setImage(fakeStoreProductDto.getImage());
-//        product.setTitle(fakeStoreProductDto.getTitle());
-//        product.setPrice(fakeStoreProductDto.getPrice());
-//        Category category = new Category();
-//        category.setDesc(fakeStoreProductDto.getCategory());
-//        product.setCategory(category);
 
         return product;
     }
