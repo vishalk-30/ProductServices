@@ -51,6 +51,16 @@ public class FakeStoreProductService implements ProductService{
         return convertFakeStoreDtoToProduct(responseFakesStoreDto);
     }
 
+    @Override
+    public Product deleteProduct(Long id) throws ProductNotFoundException {
+
+        FakeStoreProductDto fakeStoreProductDto = fakeStore.deleteProduct(id);
+        if(fakeStoreProductDto == null){
+            throw new ProductNotFoundException("Product not found for id: " + id);
+        }
+        return convertFakeStoreDtoToProduct(fakeStoreProductDto) ;
+    }
+
     private Product convertProductFromProductDto(ProductDto productDto) {
         Product product = Product.builder()
                 .title(productDto.getTitle())

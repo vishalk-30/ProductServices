@@ -2,12 +2,12 @@ package org.scaler.productservice.thirdParty;
 
 import lombok.AllArgsConstructor;
 import org.scaler.productservice.dtos.FakeStoreProductDto;
-
-import org.scaler.productservice.models.Product;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
+import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
 
@@ -51,4 +51,15 @@ public class FakeStore {
         return restTemplate.postForObject(fakeStoreUrl,fakeStoreProductDto,FakeStoreProductDto.class);
 
     }
-}
+
+    public FakeStoreProductDto deleteProduct(Long id) {
+        RequestCallback requestCallback = restTemplate.acceptHeaderRequestCallback(FakeStoreProductDto.class);
+        ResponseExtractor<ResponseEntity<FakeStoreProductDto>> responseExtractor = restTemplate.responseEntityExtractor(FakeStoreProductDto.class);
+        FakeStoreProductDto responseFakeStoreDto = restTemplate.execute(fakeStoreUrl + id, HttpMethod.DELETE, requestCallback, responseExtractor).getBody();
+        return responseFakeStoreDto;
+    }
+
+
+
+    }
+
