@@ -7,12 +7,7 @@ import org.scaler.productservice.exception.ProductNotFoundException;
 import org.scaler.productservice.models.Category;
 import org.scaler.productservice.models.Product;
 import org.scaler.productservice.thirdParty.FakeStore;
-
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpMessageConverterExtractor;
-import org.springframework.web.client.RequestCallback;
-import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 @Service

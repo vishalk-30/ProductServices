@@ -8,8 +8,6 @@ import org.scaler.productservice.services.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,13 +22,15 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<Product> getAllProduct(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProduct(){
+        List<Product> products = productService.getAllProducts();
+        return new ResponseEntity<>(products,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public Product replaceProduct(@PathVariable("id") Long id, @RequestBody ProductDto productDto){
-        return productService.replaceProduct(id,productDto);
+    public ResponseEntity<Product> replaceProduct(@PathVariable("id") Long id, @RequestBody ProductDto productDto){
+        Product product = productService.replaceProduct(id, productDto);
+        return new ResponseEntity<>(product,HttpStatus.OK);
     }
 
     
