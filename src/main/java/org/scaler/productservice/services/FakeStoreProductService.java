@@ -43,9 +43,16 @@ public class FakeStoreProductService implements ProductService{
         return convertFakeStoreDtoToProduct(responseFakeStoreDto);
     }
 
+    @Override
+    public Product addProduct(ProductDto productDto) {
+        Product product = convertProductFromProductDto(productDto);
+        FakeStoreProductDto fakeStoreProductDto = convertProductToFakeStoreDto(product);
+        FakeStoreProductDto responseFakesStoreDto = fakeStore.addProduct(fakeStoreProductDto);
+        return convertFakeStoreDtoToProduct(responseFakesStoreDto);
+    }
+
     private Product convertProductFromProductDto(ProductDto productDto) {
         Product product = Product.builder()
-                .id(productDto.getId())
                 .title(productDto.getTitle())
                 .image(productDto.getImage())
                 .price(productDto.getPrice())

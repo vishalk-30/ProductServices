@@ -32,6 +32,11 @@ public class ProductController {
         Product product = productService.replaceProduct(id, productDto);
         return new ResponseEntity<>(product,HttpStatus.OK);
     }
+    @PostMapping()
+    public ResponseEntity<Product> addProduct(@RequestBody ProductDto productDto){
+        Product product = productService.addProduct(productDto);
+        return new ResponseEntity<>(product,HttpStatus.OK);
+    }
 
     
 }

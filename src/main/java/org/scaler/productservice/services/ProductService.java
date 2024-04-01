@@ -10,4 +10,6 @@ public interface ProductService {
     Product getProductById(Long id) throws ProductNotFoundException;
     List<Product> getAllProducts();
     Product replaceProduct(Long id, ProductDto productDto);
+
+    Product addProduct(ProductDto productDto);
 }
