@@ -6,8 +6,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Builder
+
 public class Category {
     private Long id;
-    private String desc;
+    private String title;
 }

@@ -20,7 +20,7 @@ public class FakeStoreProductService implements ProductService{
         if(fakeStoreProductDto == null){
             throw new ProductNotFoundException("Product not found for id : " + id);
         }
-        return convertFakeStoreDtoToProduct(fakeStoreProductDto);
+        return convertProductFromFakeStoreDto(fakeStoreProductDto);
     }
 
     
@@ -30,7 +30,7 @@ public class FakeStoreProductService implements ProductService{
         FakeStoreProductDto[] fakeStoreProductDtos = fakeStore.getAllProducts();
         List<Product> products = new ArrayList<>();
         for(FakeStoreProductDto dto : fakeStoreProductDtos){
-            products.add(convertFakeStoreDtoToProduct(dto));
+            products.add(convertProductFromFakeStoreDto(dto));
         } return products;
 
     }
@@ -38,17 +38,17 @@ public class FakeStoreProductService implements ProductService{
     @Override
     public Product replaceProduct(Long id, ProductDto productDto) {
         Product product = convertProductFromProductDto(productDto);
-        FakeStoreProductDto fakeStoreProductDto = convertProductToFakeStoreDto(product);
+        FakeStoreProductDto fakeStoreProductDto = convertFakeStoreDtoFromProduct(product);
         FakeStoreProductDto responseFakeStoreDto = fakeStore.replaceProduct(id, fakeStoreProductDto);
-        return convertFakeStoreDtoToProduct(responseFakeStoreDto);
+        return convertProductFromFakeStoreDto(responseFakeStoreDto);
     }
 
     @Override
     public Product addProduct(ProductDto productDto) {
         Product product = convertProductFromProductDto(productDto);
-        FakeStoreProductDto fakeStoreProductDto = convertProductToFakeStoreDto(product);
+        FakeStoreProductDto fakeStoreProductDto = convertFakeStoreDtoFromProduct(product);
         FakeStoreProductDto responseFakesStoreDto = fakeStore.addProduct(fakeStoreProductDto);
-        return convertFakeStoreDtoToProduct(responseFakesStoreDto);
+        return convertProductFromFakeStoreDto(responseFakesStoreDto);
     }
 
     @Override
@@ -58,47 +58,49 @@ public class FakeStoreProductService implements ProductService{
         if(fakeStoreProductDto == null){
             throw new ProductNotFoundException("Product not found for id: " + id);
         }
-        return convertFakeStoreDtoToProduct(fakeStoreProductDto) ;
+        return convertProductFromFakeStoreDto(fakeStoreProductDto) ;
     }
 
     private Product convertProductFromProductDto(ProductDto productDto) {
-        Product product = Product.builder()
-                .title(productDto.getTitle())
-                .image(productDto.getImage())
-                .price(productDto.getPrice())
-                .category(Category.builder()
-                        .desc(productDto.getCategory())
-                        .build())
-                .description(productDto.getDescription())
-                .build();
+        Category category = new Category();
+        category.setTitle(productDto.getTitle());
+        Product product = new Product();
+        product.setCategory(category);
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setTitle(productDto.getTitle());
+        product.setId(product.getId());
+        product.setImage(productDto.getImage());
 
         return product;
     }
 
-    private FakeStoreProductDto convertProductToFakeStoreDto(Product product) {
-        FakeStoreProductDto fakeStoreProductDto = FakeStoreProductDto.builder()
-                .title(product.getTitle())
-                .category(product.getCategory().getDesc())
-                .description(product.getDescription())
-                .id(product.getId())
-                .image(product.getImage())
-                .price(product.getPrice())
-                .build();
+
+    private FakeStoreProductDto convertFakeStoreDtoFromProduct(Product product) {
+        FakeStoreProductDto fakeStoreProductDto  = new FakeStoreProductDto();
+        fakeStoreProductDto.setId(product.getId());
+        fakeStoreProductDto.setTitle(product.getTitle());
+        fakeStoreProductDto.setDescription(product.getDescription());
+        fakeStoreProductDto.setPrice(product.getPrice());
+        fakeStoreProductDto.setImage(product.getImage());
+        fakeStoreProductDto.setCategory(product.getCategory().getTitle());
 
        return fakeStoreProductDto;
     }
 
-    private Product convertFakeStoreDtoToProduct(FakeStoreProductDto fakeStoreProductDto) {
-        Product product = Product.builder()
-                .description(fakeStoreProductDto.getDescription())
-                .category(Category.builder()
-                        .desc(fakeStoreProductDto.getCategory())
-                        .build())
-                .price(fakeStoreProductDto.getPrice())
-                .image(fakeStoreProductDto.getImage())
-                .title(fakeStoreProductDto.getTitle())
-                .id(fakeStoreProductDto.getId())
-                .build();
+    private Product convertProductFromFakeStoreDto(FakeStoreProductDto fakeStoreProductDto) {
+        Category category = new Category();
+        category.setTitle(fakeStoreProductDto.getTitle());
+
+        Product product = new Product();
+        product.setCategory(category);
+        product.setDescription(fakeStoreProductDto.getDescription());
+        product.setPrice(fakeStoreProductDto.getPrice());
+        product.setTitle(fakeStoreProductDto.getTitle());
+        product.setId(fakeStoreProductDto.getId());
+        product.setImage(fakeStoreProductDto.getImage());
+
+
 
         return product;
     }

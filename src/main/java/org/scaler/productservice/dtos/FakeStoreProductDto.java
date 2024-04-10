@@ -8,7 +8,7 @@ import org.scaler.productservice.models.Product;
 
 @Getter
 @Setter
-@Builder
+
 public class FakeStoreProductDto {
     private Long id;
     private String title;
