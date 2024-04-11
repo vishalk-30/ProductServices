@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-@Service
+
+@Service("fakeStoreProductService")
 @AllArgsConstructor
 public class FakeStoreProductService implements ProductService{
     private FakeStore fakeStore;
@@ -80,9 +81,9 @@ public class FakeStoreProductService implements ProductService{
         return categoryList;
     }
 
-    private Product convertProductFromProductDto(ProductDto productDto) {
+    public Product convertProductFromProductDto(ProductDto productDto) {
         Category category = new Category();
-        category.setTitle(productDto.getTitle());
+        category.setTitle(productDto.getCategory().getTitle());
         Product product = new Product();
         product.setCategory(category);
         product.setDescription(productDto.getDescription());
@@ -119,8 +120,7 @@ public class FakeStoreProductService implements ProductService{
         product.setId(fakeStoreProductDto.getId());
         product.setImage(fakeStoreProductDto.getImage());
 
-
-
         return product;
+
     }
 }

@@ -1,6 +1,8 @@
 package org.scaler.productservice.exceptionHandler;
 
+import org.scaler.productservice.dtos.CategoryNotFoundExceptionDto;
 import org.scaler.productservice.dtos.ProductNotFoundExceptionDto;
+import org.scaler.productservice.exception.CategoryNotFoundException;
 import org.scaler.productservice.exception.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,14 @@ public class ExceptionHandlers {
     @ExceptionHandler
     public ResponseEntity<ProductNotFoundExceptionDto> handleProductNotFoundException(ProductNotFoundException exception){
         ProductNotFoundExceptionDto exceptionDto = new ProductNotFoundExceptionDto();
+        exceptionDto.setMessage(exception.getMessage());
+        exceptionDto.setStatus("Failure");
+        return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<CategoryNotFoundExceptionDto> handleCategoryNotFoundException(CategoryNotFoundException exception){
+        CategoryNotFoundExceptionDto exceptionDto = new CategoryNotFoundExceptionDto();
         exceptionDto.setMessage(exception.getMessage());
         exceptionDto.setStatus("Failure");
         return new ResponseEntity<>(exceptionDto, HttpStatus.BAD_REQUEST);
