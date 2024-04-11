@@ -10,12 +10,15 @@ import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.ResponseExtractor;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 
 @Component
 @AllArgsConstructor
 public class FakeStore {
     private RestTemplate restTemplate;
     private final String fakeStoreUrl = "https://fakestoreapi.com/products/";
+    private final String fakeStoreUrlForCategory = "https://fakestoreapi.com/products/category";
 
     public FakeStoreProductDto getProductById(Long id) {
         FakeStoreProductDto fakeStoreProductDto =
@@ -60,6 +63,15 @@ public class FakeStore {
     }
 
 
-
+    public FakeStoreProductDto[] getProductsByCategory(String category) {
+        FakeStoreProductDto[] fakeStoreProductDtos =
+                restTemplate.getForObject(fakeStoreUrlForCategory + category, FakeStoreProductDto[].class);
+        return fakeStoreProductDtos;
     }
+
+    public String[] getAllCategory() {
+        String[] categories = restTemplate.getForObject(fakeStoreUrl + "categories", String[].class);
+        return categories;
+    }
+}
 

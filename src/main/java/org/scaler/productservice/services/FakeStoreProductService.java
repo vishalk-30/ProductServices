@@ -9,6 +9,7 @@ import org.scaler.productservice.models.Product;
 import org.scaler.productservice.thirdParty.FakeStore;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 @Service
 @AllArgsConstructor
@@ -59,6 +60,24 @@ public class FakeStoreProductService implements ProductService{
             throw new ProductNotFoundException("Product not found for id: " + id);
         }
         return convertProductFromFakeStoreDto(fakeStoreProductDto) ;
+    }
+
+    @Override
+    public List<Product> getProductsByCategory(String category) {
+        FakeStoreProductDto[] fakeStoreProductDtos = fakeStore.getProductsByCategory(category);
+        List<Product> products = new ArrayList<>();
+        for(FakeStoreProductDto fakeStoreProductDto: fakeStoreProductDtos){
+            products.add(convertProductFromFakeStoreDto(fakeStoreProductDto));
+        }
+        return products;
+    }
+
+    @Override
+    public List<String> getAllCategory() {
+        String[] categories = fakeStore.getAllCategory();
+        List<String> categoryList = new ArrayList<>();
+        categoryList.addAll(Arrays.asList(categories));
+        return categoryList;
     }
 
     private Product convertProductFromProductDto(ProductDto productDto) {
