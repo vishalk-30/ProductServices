@@ -47,16 +47,18 @@ public class SelfProductService implements ProductService {
     public Product addProduct(ProductDto productDto) throws CategoryNotFoundException {
         Product product = convertProductFromProductDto(productDto);
         CategoryDto categoryDto = productDto.getCategory();
+        Category category = new Category();
+
         if (categoryDto.getId() == null) {
-            Category savedCategory = categoryService.saveCategoryInternal(categoryDto);
-            product.setCategory(savedCategory);
+            category.setTitle(categoryDto.getTitle());
         } else{
-            Category category = categoryService.getCategoryByIdInternal(categoryDto.getId());
+            category = categoryService.getCategoryByIdInternal(categoryDto.getId());
             if (category == null) {
                 throw new CategoryNotFoundException("Category Not Found for this id:" + categoryDto.getId());
             }
-            product.setCategory(category);
+
         }
+        product.setCategory(category);
 
         return productRepository.save(product);
     }
